@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <b>十进制 64进制转换</b>
+    <div>
+        <div>
+            10进制数<input type="text" id="10"/>
+        </div>
+        <div>
+            64进制数<input type="text" id='64' value="1.6pCpCpCpCp"/>
+        </div>
+    </div>
+    <button id="dec264">10进制转64进制</button>
+    <button id='642dec'>64进制转10进制</button>
+    <script>
+        /* sf 六十四进制数
+        dec 十进制数 */
+        const charact = [
+            '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+            'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 
+            'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 
+            'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 
+            'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 
+            'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 
+            'Y', 'Z', '-', '*'
+        ]
+        let dec = document.getElementById('10')
+        let sf = document.getElementById('64')
+        function dec2sf () {
+            let result = []
+            let decimal = []
+            let inputValue = getDecimal(dec.value).int
+            let inputValueDec = getDecimal(dec.value).dec
+            while(inputValue !== 0) {
+                result.push(charact[inputValue % 64])
+                inputValue = (inputValue - inputValue % 64) / 64
+            }
+            let deep = 0
+            while(deep < 10) {
+                let a = getDecimal(inputValueDec * 64).int
+                decimal.push(charact[a])
+                if (inputValueDec === 0) {
+                    deep = 10
+                }
+                inputValueDec = getDecimal(inputValueDec * 64).dec
+                deep += 1
+            }
+            console.log('10进制数' + dec.value + '转64进制为', result.reverse().join(''))
+            sf.value = result.join('') + '.' + decimal.join('')
+        }
+        function sf2dec () {
+            let result = 0
+            let inputValue = sf.value.toString().split('.')[0]
+            let decValue = sf.value.toString().split('.')[1] || ''
+            for(let i = 0; i < inputValue.length; i++) {
+                let number = charact.findIndex(c => {
+                    return c === inputValue[inputValue.length - i - 1]
+                })
+                result += number * 64**i
+            }
+            for (let i = 0; i < decValue.length; i++) {
+                let number = charact.findIndex(c => {
+                    return c === decValue[decValue.length - i - 1]
+                })
+                result += number / (Math.pow(64, (decValue.length - i)))
+            }
+            console.log('64进制数'+inputValue+'转10进制为', result)
+            dec.value = result
+        }
+        function getDecimal (value) {
+            let int = String(value).split('.')[0]
+            let dec = Number('0.' + String(value).split('.')[1])
+            return {
+                int: int,
+                dec: dec
+            }
+        }
+        document.getElementById('dec264').onclick = dec2sf
+        document.getElementById('642dec').onclick = sf2dec
+    </script>
+</body>
+</html>
