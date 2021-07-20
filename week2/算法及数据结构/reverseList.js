@@ -9,3 +9,4 @@ function reverseList(head) {
     head.next = null;
     return p;
 }
+// 链表反转

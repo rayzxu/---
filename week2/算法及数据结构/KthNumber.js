@@ -3,14 +3,14 @@
  * @param {number} k
  * @return {number}
  */
- var findKthLargest = function(nums, k) {
+ var findKthLargest = function(nums, k) { // 第 K 大 解法一
     let sortedArray = nums.sort((a, b) => {
         return b - a
     })
     return sortedArray[k - 1]
 };
 
-var findKthLargest_ = function(nums, k) {
+var findKthLargest_ = function(nums, k) { // 第 K 大 解法二
     let sortedArray = quickSort(nums)
     return sortedArray[nums.length - k]
 };
